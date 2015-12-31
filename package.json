@@ -1,5 +1,5 @@
 {
-  "name": "sqlite-orm",
+  "name": "sqlite3-orm",
   "version": "1.0.0",
   "description": "light object mapper for sqlite3 ",
   "main": "index.js",
@@ -8,7 +8,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/ciroreed/sqlite3_mapper.git"
+    "url": "git+https://github.com/ciroreed/sqlite3-orm.git"
   },
   "keywords": [
     "sqlite",
@@ -18,9 +18,9 @@
   "author": "ciroreed",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/ciroreed/sqlite3_mapper/issues"
+    "url": "https://github.com/ciroreed/sqlite3-orm/issues"
   },
-  "homepage": "https://github.com/ciroreed/sqlite3_mapper",
+  "homepage": "https://github.com/ciroreed/sqlite3-orm",
   "dependencies": {
     "sqlite3": "^3.0.10"
   }
