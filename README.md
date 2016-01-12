@@ -2,10 +2,12 @@
 summary: light object mapper for sqlite3
 
 ```javascript
+var mapper = require('sqlite3-orm');
+
 /**
 * @Param String path to sqlite3 file.
 */
-var mapper = require('sqlite3-orm').dbpath('/data/mysqlite3.db' [, true (debug)]);
+mapper.connect('/data/mysqlite3.db' [, true (debug)]);
 
 ```
 ## Examples
