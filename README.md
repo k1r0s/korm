@@ -1,11 +1,13 @@
-# sqlite3_mapper
+# sqlite3-orm
 summary: light object mapper for sqlite3
 
 ```javascript
+var mapper = require('sqlite3-orm');
+
 /**
 * @Param String path to sqlite3 file.
 */
-var mapper = require('sqlite3_mapper').dbpath('/data/mysqlite3.db');
+mapper.connect('/data/mysqlite3.db' [, true (debug)]);
 
 ```
 ## Examples
@@ -66,4 +68,4 @@ mapper.droptables(models, function(){
 # TODO todo
 
 - like comparison.
-- utilities, join, etc.
+- utilities, etc.
