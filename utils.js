@@ -85,12 +85,12 @@ var Utils = function (sqlite3Instance, verbose) {
         if (fn !== "run" && typeof cbk !== "function") {
           throw new Error("sqlorm::" + fn + " must have a callback");
         } else if (err && typeof cbk === "function") {
-          cbk(undefined, err);
+          cbk(err, undefined);
         } else if (typeof cbk === "function") {
           if (options.entity === "sqlite_master") {
             rows.shift()
           }
-          cbk(rows, err);
+          cbk(err, rows);
         }
       });
     };

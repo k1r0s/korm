@@ -7,7 +7,7 @@ var test = function(sqlorm) {
       email: ""
     }
   }];
-  var print = function(arr) {
+  var print = function(err, arr) {
     console.log("print query result:");
     console.log(arr);
   };

@@ -9,8 +9,11 @@ var SQLITE3ORM = function () {
     INSTANCE.read({
       entity: statements.entity,
       where: statements.unique
-    }, function (result) {
-      if (result.length > 0) {
+    }, function (err, result) {
+      if (err) {
+        callback(err);
+        return false;
+      } else if (result.length > 0) {
         callback(new Error("Model already exist in database"));
         return false;
       }
@@ -36,8 +39,11 @@ var SQLITE3ORM = function () {
         entity: joinTable,
         where: whereSubQuery,
         type: 'single'
-      }, function (joinModel) {
-        if (joinModel) {
+      }, function (err, joinModel) {
+        if (err) {
+          callback(err);
+          return false;
+        } else if (joinModel) {
           statements.subject[mainTableKey] = joinModel.id;
           var sql = utils.SQL_INSERT;
           var objContainer = utils.prepareStatements(statements);
@@ -50,7 +56,7 @@ var SQLITE3ORM = function () {
           utils.executeQuery(sql, objContainer.toSqlite3Map, statements,
             callback);
         } else {
-          callback(undefined, new Error("Subquery model not found on db"));
+          callback(new Error("Subquery model not found on db"));
         }
       });
     } else {

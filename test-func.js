@@ -42,7 +42,7 @@ var test = function(sqlorm) {
     sqlorm.read({
       entity: "user",
       type: "collection"
-    }, function(result) {
+    }, function(err, result) {
       console.log(result);
       if (result.length === spectedResult) {
         console.log("TEST SUCCESS");
