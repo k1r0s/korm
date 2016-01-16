@@ -21,18 +21,38 @@ var test = function (sqlorm) {
         sender: {
           user: "email"
         }
+      },
+      create: {
+        receiver: {
+          user: "email"
+        }
       }
     }
   }];
-  var print = function (arr) {
+  var print = function (arr, err) {
     console.log("print query result:");
     console.log(arr);
+    console.log(err);
   };
   var postCreation = function (tables) {
-    sqlorm.read({
+    sqlorm.create({
       entity: "mail",
-      type: "collection"
-    }, print);
+      subject: {
+        sender: 1,
+        receiver: "shaco@test.net",
+        // receiver: "asdada@test.net",
+        message: "hi Jayce, im shaco!"
+      }
+    }, function (arr, err) {
+      if(err){
+        console.log(err);
+        return false;
+      }
+      sqlorm.read({
+        entity: "mail",
+        type: "collection"
+      }, print);
+    });
   };
   var fillTables = function () {
     console.log("Tables creation done!");
@@ -51,14 +71,6 @@ var test = function (sqlorm) {
         name: "shaco",
         password: "4321",
         email: "shaco@test.net"
-      }
-    });
-    sqlorm.create({
-      entity: "mail",
-      subject: {
-        sender: 1,
-        receiver: 0,
-        message: "hi Jayce, im shaco!"
       }
     });
     sqlorm.list(postCreation);

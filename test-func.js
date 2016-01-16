@@ -12,9 +12,9 @@ var test = function(sqlorm) {
     console.log(arr);
   };
   var postCreation = function(tables) {
-    sqlorm.createIfNotExist({
+    sqlorm.createUnique({
       entity: "user",
-      where: {
+      unique: {
         email: "newuser@asd.com"
       },
       subject: {
@@ -23,9 +23,9 @@ var test = function(sqlorm) {
         email: "newuser@asd.com"
       }
     }, function() {
-      sqlorm.createIfNotExist({
+      sqlorm.createUnique({
         entity: "user",
-        where: {
+        unique: {
           email: "newuser@asd.com"
         },
         subject: {

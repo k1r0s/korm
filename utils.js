@@ -80,16 +80,24 @@ var Utils = function (sqlite3Instance, verbose) {
     return tmp;
   };
   INSTANCE.executeQuery = function (sql, map, options, cbk) {
+    var executeCallback = function (fn) {
+      sqlite3Instance[fn](sql, map, function (err, rows) {
+        if (fn !== "run" && typeof cbk !== "function") {
+          throw new Error("sqlorm::" + fn + " must have a callback");
+        } else if (err && typeof cbk === "function") {
+          cbk(undefined, err);
+        } else if (typeof cbk === "function") {
+          if (options.entity === "sqlite_master") {
+            rows.shift()
+          }
+          cbk(rows, err);
+        }
+      });
+    };
     if (verbose) {
       console.log("SQLITE3ORM::DEBUG");
-    }
-    if (verbose) {
-      console.log("->executeQuery");
-    }
-    if (verbose) {
       console.log("sql: " + sql);
-    }
-    if (verbose) {
+      console.log("->executeQuery");
       console.log(map);
     }
     if (!map) {
@@ -97,44 +105,15 @@ var Utils = function (sqlite3Instance, verbose) {
       return true;
     }
     if (options.type === undefined) {
-      sqlite3Instance.run(sql, map, function (err) {
-        if (err) {
-          throw err;
-        } else {
-          if (typeof cbk !== "undefined") {
-            cbk(err);
-          }
-        }
-      });
+      executeCallback("run");
       return true;
     }
     if (options.type === "single") {
-      sqlite3Instance.get(sql, map, function (err, row) {
-        if (err) {
-          throw err;
-        } else {
-          if (typeof cbk === "undefined") {
-            throw new Error("sqlorm::read must have a callback");
-          }
-          cbk(row, err);
-        }
-      });
+      executeCallback("get");
       return true;
     }
     if (options.type === "collection") {
-      sqlite3Instance.all(sql, map, function (err, rows) {
-        if (err) {
-          throw err;
-        } else {
-          if (typeof cbk === "undefined") {
-            throw new Error("sqlorm::read must have a callback");
-          }
-          if (options.entity === "sqlite_master") {
-            rows.shift()
-          }
-          cbk(rows, err);
-        }
-      });
+      executeCallback("all");
       return true;
     }
     return false;

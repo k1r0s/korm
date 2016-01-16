@@ -2,13 +2,16 @@ var SQLITE3ORM = function () {
   var INSTANCE = this;
   var utils = {};
   INSTANCE.joins = {};
-  INSTANCE.createIfNotExist = function (statements, callback) {
+  INSTANCE.createFromSubQuery = function (statements, callback) {
+
+  };
+  INSTANCE.createUnique = function (statements, callback) {
     INSTANCE.read({
       entity: statements.entity,
-      where: statements.where
+      where: statements.unique
     }, function (result) {
       if (result.length > 0) {
-        callback();
+        callback(new Error("Model already exist in database"));
         return false;
       }
       INSTANCE.create({
@@ -18,19 +21,58 @@ var SQLITE3ORM = function () {
     });
   };
   INSTANCE.create = function (statements, callback) {
-    var sql = utils.SQL_INSERT;
-    var objContainer = utils.prepareStatements(statements);
-    sql = sql.replace(utils.REGEX_TABLE_NAME, statements.entity);
-    sql = sql.replace(utils.REGEX_COLUMN_ARRAY, objContainer.keys.toString());
-    sql = sql.replace(utils.REGEX_VALUES_ARRAY, Object.keys(objContainer.toSqlite3Map)
-      .toString());
-    utils.executeQuery(sql, objContainer.toSqlite3Map, statements, callback);
+    if (INSTANCE.joins[statements.entity] && INSTANCE.joins[statements.entity]
+      .create) {
+      var mainTableKey = Object.keys(INSTANCE.joins[statements.entity].create)
+        .pop();
+      var joinTable = Object.keys(INSTANCE.joins[statements.entity].create[
+        mainTableKey]).pop();
+      var joinTableProp = INSTANCE.joins[statements.entity].create[
+        mainTableKey][joinTable];
+
+      var whereSubQuery = {};
+      whereSubQuery[joinTableProp] = statements.subject[mainTableKey];
+      INSTANCE.read({
+        entity: joinTable,
+        where: whereSubQuery,
+        type: 'single'
+      }, function (joinModel) {
+        if (joinModel) {
+          statements.subject[mainTableKey] = joinModel.id;
+          var sql = utils.SQL_INSERT;
+          var objContainer = utils.prepareStatements(statements);
+          sql = sql.replace(utils.REGEX_TABLE_NAME, statements.entity);
+          sql = sql.replace(utils.REGEX_COLUMN_ARRAY, objContainer.keys
+            .toString());
+          sql = sql.replace(utils.REGEX_VALUES_ARRAY, Object.keys(
+              objContainer.toSqlite3Map)
+            .toString());
+          utils.executeQuery(sql, objContainer.toSqlite3Map, statements,
+            callback);
+        } else {
+          callback(undefined, new Error("Subquery model not found on db"));
+        }
+      });
+    } else {
+      var sql = utils.SQL_INSERT;
+      var objContainer = utils.prepareStatements(statements);
+      sql = sql.replace(utils.REGEX_TABLE_NAME, statements.entity);
+      sql = sql.replace(utils.REGEX_COLUMN_ARRAY, objContainer.keys.toString());
+      sql = sql.replace(utils.REGEX_VALUES_ARRAY, Object.keys(objContainer.toSqlite3Map)
+        .toString());
+      utils.executeQuery(sql, objContainer.toSqlite3Map, statements,
+        callback);
+    }
   };
   INSTANCE.read = function (statements, callback) {
-    if (INSTANCE.joins[statements.entity] && INSTANCE.joins[statements.entity].read) {
-      var mainTableKey = Object.keys(INSTANCE.joins[statements.entity].read).pop();
-      var joinTable = Object.keys(INSTANCE.joins[statements.entity].read[mainTableKey]).pop();
-      var joinTableProp = INSTANCE.joins[statements.entity].read[mainTableKey][joinTable];
+    if (INSTANCE.joins[statements.entity] && INSTANCE.joins[statements.entity]
+      .read) {
+      var mainTableKey = Object.keys(INSTANCE.joins[statements.entity].read)
+        .pop();
+      var joinTable = Object.keys(INSTANCE.joins[statements.entity].read[
+        mainTableKey]).pop();
+      var joinTableProp = INSTANCE.joins[statements.entity].read[
+        mainTableKey][joinTable];
 
       var sql = utils.SQL_JOIN_SELECT;
       var objContainer = utils.prepareStatements(statements);
