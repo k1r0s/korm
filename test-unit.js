@@ -1,23 +1,24 @@
-var test = function(sqlorm) {
-  var modelArray = [{
-    uid: "user",
-    defaults: {
-      name: "",
-      pass: "",
-      email: ""
+var test = function (sqlorm) {
+  var models = {
+    user: {
+      defaults: {
+        name: "",
+        pass: "",
+        email: ""
+      }
     }
-  }];
-  var print = function(err, arr) {
+  };
+  var print = function (err, arr) {
     console.log("print query result:");
     console.log(arr);
   };
-  var postCreation = function(tables) {
+  var postCreation = function (tables) {
     sqlorm.read({
       entity: "user",
       type: "single"
     }, print);
   };
-  var fillTables = function() {
+  var fillTables = function () {
     console.log("Tables creation done!");
     console.log("Fill table user...");
     sqlorm.create({
@@ -40,7 +41,7 @@ var test = function(sqlorm) {
   };
   sqlorm.connect("./dbtest", true);
   console.log("Removing all tables...");
-  sqlorm.dropTables(modelArray);
+  sqlorm.dropTables(models);
   console.log("Creating tables...");
-  sqlorm.createTables(modelArray, fillTables);
+  sqlorm.createTables(models, fillTables);
 }(require("./index.js"));

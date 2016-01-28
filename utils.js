@@ -29,6 +29,12 @@ var Utils = function (sqlite3Instance, verbose) {
   INSTANCE.REGEX_JOIN_TABLE_PROP = /:joinprop:/g
   INSTANCE.REGEX_JOIN_MAIN_KEY = /:fkey:/g
 
+  INSTANCE.forIn = function (coll, fn) {
+    Object.keys(coll).forEach(function (o) {
+      fn(coll[o], o);
+    });
+  };
+
   INSTANCE.entityToTable = function (properties) {
     var arrStatement = [];
     for (var prop in properties) {

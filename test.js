@@ -1,26 +1,27 @@
-var test = function(mapper) {
-  var modelArray = [{
-    uid: "person",
-    defaults: {
-      name: "",
-      age: 0,
-      address: "",
-      timestamp: ""
+var test = function (mapper) {
+  var models = {
+    person: {
+      defaults: {
+        name: "",
+        age: 0,
+        address: "",
+        timestamp: ""
+      }
+    },
+    car: {
+      defaults: {
+        brand: "",
+        model: "",
+        cv: 0,
+        timestamp: ""
+      }
     }
-  }, {
-    uid: "car",
-    defaults: {
-      brand: "",
-      model: "",
-      cv: 0,
-      timestamp: ""
-    }
-  }];
-  var print = function(err, arr) {
+  }
+  var print = function (err, arr) {
     console.log("print query result:");
     console.log(arr);
   };
-  var postCreation = function(tables) {
+  var postCreation = function (tables) {
     console.log("Table list: ");
     console.log(tables);
     mapper.read({
@@ -32,7 +33,7 @@ var test = function(mapper) {
       type: "collection"
     }, print);
   };
-  var fillTables = function() {
+  var fillTables = function () {
     console.log("Tables creation done!");
     console.log("Fill table person...");
     mapper.create({
@@ -72,7 +73,7 @@ var test = function(mapper) {
   };
   mapper.connect("./dbtest", true);
   console.log("Removing all tables...");
-  mapper.dropTables(modelArray);
+  mapper.dropTables(models);
   console.log("Creating tables...");
-  mapper.createTables(modelArray, fillTables);
+  mapper.createTables(models, fillTables);
 }(require("./index.js"));

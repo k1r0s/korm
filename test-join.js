@@ -1,34 +1,35 @@
 var test = function (sqlorm) {
-  var modelArray = [{
-    uid: "user",
-    defaults: {
-      id: 0,
-      name: "",
-      password: "",
-      email: "",
-      timestamp: ""
-    }
-  }, {
-    uid: "mail",
-    defaults: {
-      id: 0,
-      sender: 0,
-      receiver: 0,
-      message: ""
+  var models = {
+    user: {
+      defaults: {
+        id: 0,
+        name: "",
+        password: "",
+        email: "",
+        timestamp: ""
+      }
     },
-    join: {
-      read: {
-        sender: {
-          user: "email"
-        }
+    mail: {
+      defaults: {
+        id: 0,
+        sender: 0,
+        receiver: 0,
+        message: ""
       },
-      create: {
-        receiver: {
-          user: "email"
+      join: {
+        read: {
+          sender: {
+            user: "email"
+          }
+        },
+        create: {
+          receiver: {
+            user: "email"
+          }
         }
       }
     }
-  }];
+  };
   var print = function (arr, err) {
     console.log("print query result:");
     console.log(arr);
@@ -44,7 +45,7 @@ var test = function (sqlorm) {
         message: "hi Jayce, im shaco!"
       }
     }, function (arr, err) {
-      if(err){
+      if (err) {
         console.log(err);
         return false;
       }
@@ -77,7 +78,7 @@ var test = function (sqlorm) {
   };
   sqlorm.connect("./dbtest", true);
   console.log("Removing all tables...");
-  sqlorm.dropTables(modelArray);
+  sqlorm.dropTables(models);
   console.log("Creating tables...");
-  sqlorm.createTables(modelArray, fillTables);
+  sqlorm.createTables(models, fillTables);
 }(require("./index.js"));

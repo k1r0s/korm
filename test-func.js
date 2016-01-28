@@ -1,17 +1,18 @@
-var test = function(sqlorm) {
-  var modelArray = [{
-    uid: "user",
-    defaults: {
-      name: "",
-      pass: "",
-      email: ""
+var test = function (sqlorm) {
+  var models = {
+    user: {
+      defaults: {
+        name: "",
+        pass: "",
+        email: ""
+      }
     }
-  }];
-  var print = function(arr) {
+  };
+  var print = function (arr) {
     console.log("print query result:");
     console.log(arr);
   };
-  var postCreation = function(tables) {
+  var postCreation = function (tables) {
     sqlorm.createUnique({
       entity: "user",
       unique: {
@@ -22,7 +23,7 @@ var test = function(sqlorm) {
         pass: "1234",
         email: "newuser@asd.com"
       }
-    }, function() {
+    }, function () {
       sqlorm.createUnique({
         entity: "user",
         unique: {
@@ -33,16 +34,16 @@ var test = function(sqlorm) {
           pass: "1234",
           email: "newuser@asd.com"
         }
-      }, function() {
+      }, function () {
         testResult(3);
       });
     });
   };
-  var testResult = function(spectedResult) {
+  var testResult = function (spectedResult) {
     sqlorm.read({
       entity: "user",
       type: "collection"
-    }, function(err, result) {
+    }, function (err, result) {
       console.log(result);
       if (result.length === spectedResult) {
         console.log("TEST SUCCESS");
@@ -51,7 +52,7 @@ var test = function(sqlorm) {
       }
     });
   }
-  var fillTables = function() {
+  var fillTables = function () {
     console.log("Tables creation done!");
     console.log("Fill table user...");
     sqlorm.create({
@@ -74,7 +75,7 @@ var test = function(sqlorm) {
   };
   sqlorm.connect("./dbtest", true);
   console.log("Removing all tables...");
-  sqlorm.dropTables(modelArray);
+  sqlorm.dropTables(models);
   console.log("Creating tables...");
-  sqlorm.createTables(modelArray, fillTables);
+  sqlorm.createTables(models, fillTables);
 }(require("./index.js"));

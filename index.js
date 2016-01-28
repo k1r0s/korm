@@ -2,9 +2,6 @@ var SQLITE3ORM = function () {
   var INSTANCE = this;
   var utils = {};
   INSTANCE.joins = {};
-  INSTANCE.createFromSubQuery = function (statements, callback) {
-
-  };
   INSTANCE.createUnique = function (statements, callback) {
     INSTANCE.read({
       entity: statements.entity,
@@ -126,21 +123,22 @@ var SQLITE3ORM = function () {
   };
   INSTANCE.dropTables = function (models) {
     utils.executeQuery("BEGIN");
-    models.forEach(INSTANCE.dropTable);
+    utils.forIn(models, INSTANCE.dropTable);
     utils.executeQuery("COMMIT");
   };
-  INSTANCE.dropTable = function (model) {
+  INSTANCE.dropTable = function (model, uid) {
     var sql = utils.SQL_DROPTABLE;
-    sql = sql.replace(utils.REGEX_TABLE_NAME, model.uid);
+    sql = sql.replace(utils.REGEX_TABLE_NAME, uid);
     utils.executeQuery(sql);
   };
   INSTANCE.createTables = function (models, callback) {
     utils.executeQuery("BEGIN");
-    models.forEach(INSTANCE.createTable);
+    utils.forIn(models, INSTANCE.createTable);
     utils.executeQuery("COMMIT");
     callback(models);
   };
-  INSTANCE.createTable = function (model) {
+  INSTANCE.createTable = function (model, uid) {
+    model["uid"] = uid;
     if (model.join) {
       INSTANCE.joins[model.uid] = model.join;
     }
