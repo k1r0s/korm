@@ -1,3 +1,5 @@
 node_modules/
 dbtest
 npm-debug.log
+sqlite3-orm.iml
+.idea
