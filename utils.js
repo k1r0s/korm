@@ -76,7 +76,7 @@ var Utils = function (sqlite3Instance, verbose) {
         tmp.whereKeysAssoc += prop + "=" + _keyStatement;
         tmp.toSqlite3Map[_keyStatement] = subjectLike[prop];
         if (prop !== _last) {
-          tmp.whereKeysAssoc += " AND ";
+          tmp.whereKeysAssoc += stt.or ? " OR " : " AND ";
         }
       }
       stt.type = stt.type || "collection";
