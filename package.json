@@ -12,8 +12,7 @@
   },
   "keywords": [
     "sqlite",
-    "orm",
-    "node"
+    "orm"
   ],
   "author": "ciroreed",
   "license": "ISC",
