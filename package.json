@@ -2,7 +2,7 @@
   "name": "sqlite3-orm",
   "version": "2.0.0",
   "description": "light object mapper for sqlite3 ",
-  "main": "index.js",
+  "main": "src/adapter.js",
   "scripts": {
     "postpublish": "git push origin master"
   },
