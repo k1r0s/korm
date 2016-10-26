@@ -1,6 +1,6 @@
 {
   "name": "sqlite3-orm",
-  "version": "2.0.1",
+  "version": "2.0.2",
   "description": "light object mapper for sqlite3 ",
   "main": "src/adapter.js",
   "scripts": {
