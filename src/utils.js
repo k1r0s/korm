@@ -1,8 +1,7 @@
-var req = {
-  constants: require("./constants.js")
-};
+var Class = require("kaop").Class;
+var Constants = require("./Constants");
 
-var utils = {
+var Utils = Class.static({
   forIn: function (coll, fn) {
     Object.keys(coll).forEach(function (v) {
       fn(coll[v], v);
@@ -12,24 +11,24 @@ var utils = {
     var arrStatement = [];
     Object.keys(rawEntity).forEach(function(v){
       if (v === "id") {
-        arrStatement.push(v + " " + req.constants.DATA_TYPES.PK);
+        arrStatement.push(v + " " + Constants.DATA_TYPES.PK);
       } else if (typeof rawEntity[v] === "number") {
-        arrStatement.push(v + " " + req.constants.DATA_TYPES.NUM);
+        arrStatement.push(v + " " + Constants.DATA_TYPES.NUM);
       } else {
-        arrStatement.push(v + " " + req.constants.DATA_TYPES.TEXT);
+        arrStatement.push(v + " " + Constants.DATA_TYPES.TEXT);
       }
     });
     return arrStatement.join(",");
   },
   createTableFromEntity: function(model, uid){
-    var sql = req.constants.SQL_CREATETABLE;
-    sql = sql.replace(req.constants.REGEX_TABLE_NAME, uid);
-    sql = sql.replace(req.constants.REGEX_COLUMN_DATATYPES, this.parseTypes(model.defaults));
+    var sql = Constants.SQL_CREATETABLE;
+    sql = sql.replace(Constants.REGEX_TABLE_NAME, uid);
+    sql = sql.replace(Constants.REGEX_COLUMN_DATATYPES, this.parseTypes(model.defaults));
     return sql;
   },
   dropTableFromEntity: function(model, uid){
-    var sql = req.constants.SQL_DROPTABLE;
-    sql = sql.replace(req.constants.REGEX_TABLE_NAME, uid);
+    var sql = Constants.SQL_DROPTABLE;
+    sql = sql.replace(Constants.REGEX_TABLE_NAME, uid);
     return sql;
   },
   prepareOrmQuery: function(definition){
@@ -39,7 +38,7 @@ var utils = {
     tmp.keysAssoc = [];
     tmp.whereKeysAssoc = "";
     tmp.options = "";
-    tmp.sql = req.constants.operations[definition.action];
+    tmp.sql = Constants.operations[definition.action];
     if(typeof definition.subject !== "undefined"){
       Object.keys(definition.subject).forEach(function(v){
         var _tmpKey = "$" + v;
@@ -49,7 +48,7 @@ var utils = {
       });
     }
     if(definition.action === "read" && definition.last){
-      tmp.options = req.constants.SQL_OPTIONS.replace(req.constants.REGEX_TABLE_NAME, definition.entity);
+      tmp.options = Constants.SQL_OPTIONS.replace(Constants.REGEX_TABLE_NAME, definition.entity);
     }
     if(typeof definition.where !== "undefined"){
       tmp.whereKeysAssoc = "WHERE ";
@@ -65,18 +64,18 @@ var utils = {
       });
     }
 
-    tmp.sql = tmp.sql.replace(req.constants.REGEX_TABLE_NAME, definition.entity);
-    tmp.sql = tmp.sql.replace(req.constants.REGEX_COLUMN_ARRAY, tmp.keys.toString());
-    tmp.sql = tmp.sql.replace(req.constants.REGEX_WHERE_CONDITION, tmp.whereKeysAssoc);
-    tmp.sql = tmp.sql.replace(req.constants.REGEX_UPDATE_SETS, tmp.keysAssoc.toString());
-    tmp.sql = tmp.sql.replace(req.constants.REGEX_VALUES_ARRAY, Object.keys(tmp.toSqlite3Map).toString());
-    tmp.sql = tmp.sql.replace(req.constants.REGEX_OPTIONS, tmp.options);
+    tmp.sql = tmp.sql.replace(Constants.REGEX_TABLE_NAME, definition.entity);
+    tmp.sql = tmp.sql.replace(Constants.REGEX_COLUMN_ARRAY, tmp.keys.toString());
+    tmp.sql = tmp.sql.replace(Constants.REGEX_WHERE_CONDITION, tmp.whereKeysAssoc);
+    tmp.sql = tmp.sql.replace(Constants.REGEX_UPDATE_SETS, tmp.keysAssoc.toString());
+    tmp.sql = tmp.sql.replace(Constants.REGEX_VALUES_ARRAY, Object.keys(tmp.toSqlite3Map).toString());
+    tmp.sql = tmp.sql.replace(Constants.REGEX_OPTIONS, tmp.options);
 
     tmp.sql = tmp.sql.trim();
     delete tmp.options;
 
     return tmp;
   }
-}
+});
 
-module.exports = utils;
+module.exports = Utils;

@@ -1,6 +1,6 @@
 var assert = require("assert");
-var ormUtils = require("../src/utils.js");
-var Adapter = require("../src/adapter.js");
+var ormUtils = require("../src/Utils");
+var Adapter = require("../src/Adapter");
 
 var ormAdapter;
 var models = {
@@ -23,17 +23,15 @@ var models = {
   }
 };
 var closeDatabase = function(cbk){
-  if(ormAdapter && ormAdapter.sqlite3.close){
-    ormAdapter.sqlite3.close(cbk);
+  if(ormAdapter && ormAdapter.sqlite3Instance.close){
+    ormAdapter.sqlite3Instance.close(cbk);
     return;
   }
   cbk();
 };
 var connectDatabase = function(){
-  ormAdapter = new Adapter(dbpath);
-  return ormAdapter.init(models, true)
+  return new Adapter("../dbtest", models, true);
 };
-var dbpath = __dirname + "/files/dbtest";
 
 describe("sqlite3-orm:utils", function(){
   describe("#forIn", function(){
@@ -202,8 +200,8 @@ describe("sqlite3-orm:utils", function(){
 
 describe("sqlite3-orm:adapter", function(){
 
-  beforeEach(function(done){
-    connectDatabase().then(done);
+  beforeEach(function(){
+    connectDatabase();
   });
 
   afterEach(function(done){
