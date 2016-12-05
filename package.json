@@ -2,9 +2,10 @@
   "name": "sqlite3-orm",
   "version": "2.0.2",
   "description": "light object mapper for sqlite3 ",
-  "main": "src/adapter.js",
+  "main": "src/index.js",
   "scripts": {
-    "postpublish": "git push origin master"
+    "postpublish": "git push origin master",
+    "test": "mocha"
   },
   "repository": {
     "type": "git",
@@ -21,6 +22,8 @@
   },
   "homepage": "https://github.com/ciroreed/sqlite3-orm",
   "dependencies": {
+    "kaop": "^2.3.8",
+    "mysql": "^2.12.0",
     "sqlite3": "^3.0.10"
   }
 }
