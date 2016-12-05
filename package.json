@@ -4,7 +4,8 @@
   "description": "light object mapper for sqlite3 ",
   "main": "src/adapter.js",
   "scripts": {
-    "postpublish": "git push origin master"
+    "postpublish": "git push origin master",
+    "test": "mocha"
   },
   "repository": {
     "type": "git",
