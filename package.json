@@ -22,8 +22,8 @@
   },
   "homepage": "https://github.com/ciroreed/sqlite3-orm",
   "dependencies": {
-    "kaop": "^2.3.8",
+    "kaop": "^2.6.0",
     "mysql": "^2.12.0",
-    "sqlite3": "^3.0.10"
+    "sqlite3": "^3.1.8"
   }
 }

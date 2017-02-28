@@ -24,7 +24,7 @@ var Instance = Class.static({
    *                                    operation is success
    * @return {undefined}
    */
-  exec: ["$log", function(sql, resolvePromise) {
+  exec: ["log", function(sql, resolvePromise) {
     this.sqlite3.exec(sql, resolvePromise);
   }],
 
@@ -40,7 +40,7 @@ var Instance = Class.static({
    *                                        operation is success
    * @return {undefined}
    */
-  query: ["$log", function(sql, map, resolvePromise) {
+  query: ["log", function(sql, map, resolvePromise) {
     this.sqlite3.all(sql, map, resolvePromise);
   }],
 
