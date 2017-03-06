@@ -1,6 +1,6 @@
 {
-  "name": "sqlite3-orm",
-  "version": "2.0.3",
+  "name": "korm",
+  "version": "0.2.3",
   "description": "light object mapper for sqlite3 ",
   "main": "src/index.js",
   "scripts": {
@@ -9,18 +9,18 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/ciroreed/sqlite3-orm.git"
+    "url": "git+https://github.com/k1r0s/korm.git"
   },
   "keywords": [
     "sqlite",
     "orm"
   ],
-  "author": "ciroreed",
+  "author": "k1r0s",
   "license": "ISC",
   "bugs": {
-    "url": "https://github.com/ciroreed/sqlite3-orm/issues"
+    "url": "https://github.com/k1r0s/korm/issues"
   },
-  "homepage": "https://github.com/ciroreed/sqlite3-orm",
+  "homepage": "https://github.com/k1r0s/korm",
   "dependencies": {
     "kaop": "^2.6.0",
     "mysql": "^2.12.0",
