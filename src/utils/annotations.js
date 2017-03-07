@@ -1,8 +1,9 @@
-var annotations = require("kaop").annotations;
+var Decorators = require("kaop").Decorators;
+var Phase = require("kaop").Phase;
 
-annotations.add(function $log() {
-  this.after(function(opts, next) {
-    console.log(opts.args);
-    next();
-  });
-});
+Decorators.push(
+    Phase.EXECUTE,
+    function log() {
+        console.log(meta.args);
+    }
+);

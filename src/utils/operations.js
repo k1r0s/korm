@@ -7,6 +7,16 @@ var utils = Class.static({
       fn(coll[v], v);
     });
   },
+  dropAllTablesStatement: function(entities){
+      return entities.map(function(entity){
+          utils.dropTableFromEntity(entity, entity.name);
+      }).join("");
+  },
+  createAllTablesStatement: function(entities){
+      return entities.map(function(entity){
+          utils.createTableFromEntity(entity, entity.name);
+      }).join("");
+  },
   parseTypes: function(rawEntity) {
     var arrStatement = [];
     Object.keys(rawEntity).forEach(function(v) {

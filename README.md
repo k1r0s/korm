@@ -1,4 +1,11 @@
-# sqlite3-orm
-summary: light object mapper for sqlite3
+# korm
 
-FYI ~/test/test-utils.js contains lots of examples
+lightweight ORM for various SQL engines in nodejs
+
+currently supported: __sqlite__
+
+in progress: __mysql__
+
+### [Docs](../master/docs/api.md)
+
+>FYI ~/test/test-utils.js contains lots of examples
