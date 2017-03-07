@@ -9,12 +9,12 @@ var utils = Class.static({
   },
   dropAllTablesStatement: function(entities){
       return entities.map(function(entity){
-          utils.dropTableFromEntity(entity, entity.name);
+          return utils.dropTableFromEntity(entity, entity.name);
       }).join("");
   },
   createAllTablesStatement: function(entities){
       return entities.map(function(entity){
-          utils.createTableFromEntity(entity, entity.name);
+          return utils.createTableFromEntity(entity, entity.name);
       }).join("");
   },
   parseTypes: function(rawEntity) {
@@ -34,6 +34,8 @@ var utils = Class.static({
     var sql = constants.SQL_CREATETABLE;
     sql = sql.replace(constants.REGEX_TABLE_NAME, uid);
     sql = sql.replace(constants.REGEX_COLUMN_DATATYPES, this.parseTypes(model.defaults));
+    console.log(sql);
+
     return sql;
   },
   dropTableFromEntity: function(model, uid) {
