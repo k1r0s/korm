@@ -23,6 +23,7 @@
   "homepage": "https://github.com/ciroreed/sqlite3-orm",
   "dependencies": {
     "kaop": "^2.3.8",
+    "mocha": "^3.2.0",
     "mysql": "^2.12.0",
     "sqlite3": "^3.0.10"
   }
