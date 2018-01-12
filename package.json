@@ -1,6 +1,6 @@
 {
   "name": "korm",
-  "version": "0.2.4",
+  "version": "0.3.0",
   "description": "light object mapper for sqlite3 ",
   "main": "src/index.js",
   "scripts": {
