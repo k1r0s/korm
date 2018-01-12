@@ -1,50 +1,41 @@
-var constants = require("./constants");
-var Class = require("kaop").Class;
+const constants = require("./constants");
 
-var utils = Class.static({
+module.exports = Utils = {
   forIn: function(coll, fn) {
-    Object.keys(coll).forEach(function(v) {
-      fn(coll[v], v);
-    });
+    Object.keys(coll).forEach(v => fn(coll[v], v));
   },
   dropAllTablesStatement: function(entities){
-      return entities.map(function(entity){
-          return utils.dropTableFromEntity(entity, entity.name);
-      }).join("");
+      return entities.map(entity => Utils.dropTableFromEntity(entity, entity.name)).join("");
   },
   createAllTablesStatement: function(entities){
-      return entities.map(function(entity){
-          return utils.createTableFromEntity(entity, entity.name);
-      }).join("");
+      return entities.map(entity => Utils.createTableFromEntity(entity, entity.name)).join("");
   },
   parseTypes: function(rawEntity) {
-    var arrStatement = [];
-    Object.keys(rawEntity).forEach(function(v) {
+    const arrStatement = [];
+    Object.keys(rawEntity).forEach(v => {
       if (v === "id") {
-        arrStatement.push(v + " " + constants.DATA_TYPES.PK);
+        arrStatement.push(`${v} ${constants.DATA_TYPES.PK}`);
       } else if (typeof rawEntity[v] === "number") {
-        arrStatement.push(v + " " + constants.DATA_TYPES.NUM);
+        arrStatement.push(`${v} ${constants.DATA_TYPES.NUM}`);
       } else {
-        arrStatement.push(v + " " + constants.DATA_TYPES.TEXT);
+        arrStatement.push(`${v} ${constants.DATA_TYPES.TEXT}`);
       }
     });
     return arrStatement.join(",");
   },
   createTableFromEntity: function(model, uid) {
-    var sql = constants.SQL_CREATETABLE;
+    let sql = constants.SQL_CREATETABLE;
     sql = sql.replace(constants.REGEX_TABLE_NAME, uid);
     sql = sql.replace(constants.REGEX_COLUMN_DATATYPES, this.parseTypes(model.defaults));
-    console.log(sql);
-
     return sql;
   },
   dropTableFromEntity: function(model, uid) {
-    var sql = constants.SQL_DROPTABLE;
+    let sql = constants.SQL_DROPTABLE;
     sql = sql.replace(constants.REGEX_TABLE_NAME, uid);
     return sql;
   },
   prepareOrmQuery: function(definition) {
-    var tmp = {};
+    const tmp = {};
     tmp.toSqlite3Map = {};
     tmp.keys = [];
     tmp.keysAssoc = [];
@@ -52,9 +43,9 @@ var utils = Class.static({
     tmp.options = "";
     tmp.sql = constants.operations[definition.action];
     if (typeof definition.subject !== "undefined") {
-      Object.keys(definition.subject).forEach(function(v) {
-        var _tmpKey = "$" + v;
-        tmp.keysAssoc.push(v + "=" + _tmpKey);
+      Object.keys(definition.subject).forEach(v => {
+        const _tmpKey = `$${v}`;
+        tmp.keysAssoc.push(`${v}=${_tmpKey}`);
         tmp.toSqlite3Map[_tmpKey] = definition.subject[v];
         tmp.keys.push(v);
       });
@@ -64,11 +55,11 @@ var utils = Class.static({
     }
     if (typeof definition.where !== "undefined") {
       tmp.whereKeysAssoc = "WHERE ";
-      var _keys = Object.keys(definition.where);
-      var _last = _keys[_keys.length - 1];
-      _keys.forEach(function(v) {
-        var _tmpKey = "$where_" + v;
-        tmp.whereKeysAssoc += v + "=" + _tmpKey;
+      const _keys = Object.keys(definition.where);
+      const _last = _keys[_keys.length - 1];
+      _keys.forEach(v => {
+        const _tmpKey = `$where_${v}`;
+        tmp.whereKeysAssoc += `${v}=${_tmpKey}`;
         tmp.toSqlite3Map[_tmpKey] = definition.where[v];
         if (v !== _last) {
           tmp.whereKeysAssoc += definition.or ? " OR " : " AND ";
@@ -88,6 +79,4 @@ var utils = Class.static({
 
     return tmp;
   }
-});
-
-module.exports = utils;
+};

@@ -8,15 +8,8 @@ describe("adapter general test suit", function() {
       database: __dirname + "/files/dbtest"
     };
     try {
-      sqliteAdapter.connect(opts, done);
-    } catch (e) {
-      console.log(e);
-    }
-  });
-
-  it("should close sqlite3 instance connection", function(done) {
-    try {
-      sqliteAdapter.destroy(done);
+      const instance = new sqliteAdapter
+      instance.connect(opts, _ => instance.destroy(done));
     } catch (e) {
       console.log(e);
     }

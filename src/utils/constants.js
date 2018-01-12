@@ -1,6 +1,4 @@
-var Class = require("kaop").Class;
-
-var constants = Class.static({
+module.exports = Constants = {
   operations: {
     "create": "INSERT INTO :tablename: (:columnnames:) VALUES (:columnvalues:);",
     "update": "UPDATE :tablename: SET :updatesets: :whereclausule:;",
@@ -27,7 +25,4 @@ var constants = Class.static({
   REGEX_JOIN_TABLE_PROP: /:joinprop:/g,
   REGEX_JOIN_MAIN_KEY: /:fkey:/g,
   REGEX_OPTIONS: /:options:/g
-});
-
-
-module.exports = constants;
+};

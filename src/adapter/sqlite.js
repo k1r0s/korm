@@ -1,7 +1,9 @@
-var sqliteLib = require("sqlite3");
-var Class = require("kaop").Class;
+const sqliteLib = require("sqlite3");
+const { createClass, reflect } = require("kaop");
 
-var Instance = Class.static({
+const Log = reflect.advice(meta => console.log(meta.args));
+
+module.exports = Instance = createClass({
   sqlite3: null,
   entities: null,
 
@@ -24,7 +26,7 @@ var Instance = Class.static({
    *                                    operation is success
    * @return {undefined}
    */
-  exec: ["log", function(sql, resolvePromise) {
+  exec: [Log, function(sql, resolvePromise) {
     this.sqlite3.exec(sql, resolvePromise);
   }],
 
@@ -40,7 +42,7 @@ var Instance = Class.static({
    *                                        operation is success
    * @return {undefined}
    */
-  query: ["log", function(sql, map, resolvePromise) {
+  query: [Log, function(sql, map, resolvePromise) {
     this.sqlite3.all(sql, map, resolvePromise);
   }],
 
@@ -55,5 +57,3 @@ var Instance = Class.static({
     this.sqlite3.close(resolvePromise);
   }
 });
-
-module.exports = Instance;
